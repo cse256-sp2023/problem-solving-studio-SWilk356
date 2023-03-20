@@ -1,7 +1,25 @@
 // ---- Define your dialogs  and panels here ----
+var new_perms = define_new_effective_permissions("permissions-panel");
+$('#sidepanel').append(new_perms);
+$('#permissions-panel').attr('filepath', '/C/presentation_documents_permbutton/important-file.txt');
+define_new_user_select_field("user", 'Select User', function(selected_user) {$('#permissions-panel').attr('username', selected_user);});
+define_new_dialog("dialog_1", "blank");
 
+$(document).on( "click", '.oi' , function() {
+    let my_filename_var = $(this).attr('filepath');
+    console.log($(this).attr('username'));
+    console.log($(this).attr('permission-name'));
 
+    let my_file_obj_var = path_to_file[my_filename_var];
+    let my_user_obj_var = all_users[my_filename_var];
+    //what is permission_to_check?
+    let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, true, true);
 
+    let explanation_text = get_explanation_text(explanation);
+
+    $('#permissions-panel').text(explanation_text);
+
+});
 // ---- Display file structure ----
 
 // (recursively) makes and returns an html element (wrapped in a jquery object) for a given file object
