@@ -1,24 +1,26 @@
 // ---- Define your dialogs  and panels here ----
-var new_perms = define_new_effective_permissions("permissions-panel");
+var new_perms = define_new_effective_permissions("permissions-panel", true);
 $('#sidepanel').append(new_perms);
-$('#permissions-panel').attr('filepath', '/C/presentation_documents_permbutton/important-file.txt');
-define_new_user_select_field("user", 'Select User', function(selected_user) {$('#permissions-panel').attr('username', selected_user);});
-define_new_dialog("dialog_1", "blank");
+$('#permissions-panel').attr('filepath', '/C/presentation_documents/important_file.txt');
+var new_user = define_new_user_select_field("user", 'Select User', function(selected_user) {$('#permissions-panel').attr('username', selected_user);});
+$('#sidepanel').append(new_user);
 
-$(document).on( "click", '.oi' , function() {
-    let my_filename_var = $(this).attr('filepath');
-    console.log($(this).attr('username'));
-    console.log($(this).attr('permission-name'));
+$('.fa-info-circle').click( function() {
+    var new_dialog = define_new_dialog("dialog_1", "blank");
+    new_dialog.dialog('open');
+
+    let my_filename_var = $('#permissions-panel').attr('filepath');
+    let my_user_var = $('#permissions-panel').attr('username');
+    let my_permission = $(this).attr('permission_name');
 
     let my_file_obj_var = path_to_file[my_filename_var];
-    let my_user_obj_var = all_users[my_filename_var];
-    //what is permission_to_check?
-    let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, true, true);
+    let my_user_obj_var = all_users[my_user_var];
+    
+    let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, my_permission, true);
 
     let explanation_text = get_explanation_text(explanation);
 
-    $('#permissions-panel').text(explanation_text);
-
+    new_dialog.text(explanation_text);
 });
 // ---- Display file structure ----
 
